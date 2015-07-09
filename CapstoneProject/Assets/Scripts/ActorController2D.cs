@@ -15,7 +15,7 @@ public class ActorController2D : MonoBehaviour
 	public float gravity = 6f;
 	public float maxFall = 200f;
 	public float jump = 200f;
-	public float maxIncline = 45f;
+	public float maxIncline = 5f;
 
 	// layerMasks
 	int layerMask;
@@ -73,11 +73,18 @@ public class ActorController2D : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+		velocity = rb2d.velocity;
+		
 		// Update Animation variables
 		anim.SetBool("Grounded", grounded);
 		//Debug.Log ("Grounded set " + grounded);
-
+		
 		anim.SetFloat ("Velocity", Mathf.Abs (horizontalAxis));
+		
+		if ((facingRight && horizontalAxis < 0) || (!facingRight && horizontalAxis > 0)) {
+			Debug.Log ("Flip called");
+			Flip ();
+		}
 
 	}
 
@@ -118,20 +125,13 @@ public class ActorController2D : MonoBehaviour
 
 
 
-
-
-
-
 		//---------------------------------------------------------------------------------------\\
 		//-------------------------------Lateral Movement---------------------------------------\\
 		//---------------------------------------------------------------------------------------\\
 		Move ();
 
 
-		if ((facingRight && horizontalAxis < 0) || (!facingRight && horizontalAxis > 0)) {
-			Debug.Log ("Flip called");
-			Flip ();
-		}
+
 
 	}
 
@@ -149,7 +149,7 @@ public class ActorController2D : MonoBehaviour
 			Debug.Log ("JUMP");
 			velocity = new Vector2 (velocity.x, jump);
 			grounded = false;
-			Debug.Log ("Grounded set " + grounded + "(false)");
+			//Debug.Log ("Grounded set " + grounded + "(false)");
 		}
 	}
 	
@@ -195,7 +195,7 @@ public class ActorController2D : MonoBehaviour
 						float angle = Vector2.Angle (hitInfos [i].point - hitInfos [i - 1].point, Vector2.right);
 
 						if (Mathf.Abs (angle /*- 90*/) < maxIncline) {
-							transform.Translate (direction * (hitInfos [i].fraction * sideRayLength - (box.width / 2)));
+							transform.Translate (direction * (hitInfos [i].distance - box.width / 2));
 							velocity = new Vector2 (0, velocity.y);
 							break;
 						}
@@ -204,6 +204,7 @@ public class ActorController2D : MonoBehaviour
 					lastFraction = hitInfos [i].fraction;
 				}
 			}
+
 		}
 	}
 	
@@ -211,17 +212,15 @@ public class ActorController2D : MonoBehaviour
 	{
 		if (!grounded) {
 			velocity = new Vector2 (velocity.x, Mathf.Max (velocity.y - gravity, -maxFall));
-			anim.SetBool ("Grounded", grounded);
 		}
-
 		
 		if (velocity.y < 0) {
 			falling = true;
 		}
 		
 		if (grounded || falling) {
-			Vector2 startPoint = new Vector2 (box.xMin + margin, box.center.y);
-			Vector2 endPoint = new Vector2 (box.xMax - margin, box.center.y);
+			Vector2 startPoint = new Vector2 (box.xMin /*+ margin*/, box.center.y);
+			Vector2 endPoint = new Vector2 (box.xMax /*- margin*/, box.center.y);
 			RaycastHit2D[] hitInfos = new RaycastHit2D[verticalRays];
 			
 			// add half my box height since it starts from the center
@@ -244,6 +243,7 @@ public class ActorController2D : MonoBehaviour
 				if (hitInfos [i].fraction > 0 && hitInfos[i].collider.CompareTag("Platform")) {
 					connected = true;
 					if (hitInfos [i].fraction < smallestFraction) {
+
 						indexUsed = i;
 						smallestFraction = hitInfos [i].fraction;
 					}
@@ -251,11 +251,11 @@ public class ActorController2D : MonoBehaviour
 			}
 
 			if (connected) {
+				Debug.Log ("Gravity Raycast.fraction: " + hitInfos[indexUsed].fraction);
 				grounded = true;
 				falling = false;
 				transform.Translate (Vector3.down * (hitInfos [indexUsed].distance - box.height / 2));
 				velocity = new Vector2 (velocity.x, 0);
-
 			} else {
 				grounded = false;
 			}

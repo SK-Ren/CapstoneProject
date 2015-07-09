@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerControls : MonoBehaviour {
 	
-	protected ActorController2D actorControl; 
+	public ActorController2D actorControl; 
 
 	// Use this for initialization
 	void Start () 
@@ -15,7 +15,7 @@ public class PlayerControls : MonoBehaviour {
 	void Update () {
 
 		
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (Input.GetButton("Jump"))
 			actorControl.Jump();
 
 		// Assigned Attack/Action Button
@@ -23,7 +23,7 @@ public class PlayerControls : MonoBehaviour {
 			actorControl.Attack();
 
 		// Actor class Horizontal Input
-		actorControl.horizontalAxis = Input.GetAxis ("Horizontal");
+		actorControl.horizontalAxis = Input.GetAxisRaw ("Horizontal");
 	}
 
 	void FixedUpdate()
