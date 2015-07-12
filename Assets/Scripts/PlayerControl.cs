@@ -19,12 +19,14 @@ public class PlayerControl : MonoBehaviour
 	private Animator _animator;
 	private RaycastHit2D _lastControllerColliderHit;
 	private Vector3 _velocity;
+	private Damage _damage;
 
 
 	void Awake()
 	{
 		_animator = GetComponent<Animator>();
 		_controller = GetComponent<CharacterController2D>();
+		_damage = GetComponent<Damage> ();
 
 		// listen to some events for illustration purposes
 		_controller.onControllerCollidedEvent += onControllerCollider;
@@ -49,6 +51,11 @@ public class PlayerControl : MonoBehaviour
 	void onTriggerEnterEvent( Collider2D col )
 	{
 		Debug.Log( "onTriggerEnterEvent: " + col.gameObject.name );
+		Debug.Log ( "Collider Tag: " + col.tag);
+		if (col.CompareTag("Damage Source")) {
+			Debug.Log ("_damage.takeDamage() called");
+			_damage.takeDamage(col);
+		}
 	}
 
 

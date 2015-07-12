@@ -1,3 +1,6 @@
 *.info
 Temp/UnityLockfile
 *.asset
+*.bin
+*.db
+*.stamp

@@ -199,6 +199,7 @@ public class CharacterController2D : MonoBehaviour
 			if( ( triggerMask.value & 1 << i ) == 0 )
 				Physics2D.IgnoreLayerCollision( gameObject.layer, i );
 		}
+		Debug.Log("Trigger: " + boxCollider.isTrigger);
 	}
 
 
