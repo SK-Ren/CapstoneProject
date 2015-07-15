@@ -19,7 +19,7 @@ public class EnemyIdle : MonoBehaviour
 	private Animator _animator;
 	private RaycastHit2D _lastControllerColliderHit;
 	private Vector3 _velocity;
-	private Damage _damage;
+	private CollisionManager _colManager;
 
 
 	void Awake()
@@ -50,8 +50,8 @@ public class EnemyIdle : MonoBehaviour
 	void onTriggerEnterEvent( Collider2D col )
 	{
 		Debug.Log( "onTriggerEnterEvent: " + col.gameObject.name );
-		if (col.CompareTag("Damage Source")) {
-			_damage.takeDamage(col);
+		if(1<<col.gameObject.layer == LayerMask.GetMask("Hitbox")){
+			//_colManager.Collision(col);
 		}
 	}
 

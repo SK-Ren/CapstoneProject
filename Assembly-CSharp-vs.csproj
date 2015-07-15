@@ -46,10 +46,12 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\ActorInfo.cs" />
      <Compile Include="Assets\Scripts\Attack.cs" />
      <Compile Include="Assets\Scripts\CharacterController2D.cs" />
-     <Compile Include="Assets\Scripts\Damage.cs" />
+     <Compile Include="Assets\Scripts\CollisionManager.cs" />
      <Compile Include="Assets\Scripts\EnemyIdle.cs" />
+     <Compile Include="Assets\Scripts\LifebarUI.cs" />
      <Compile Include="Assets\Scripts\PlayerControl.cs" />
      <Compile Include="Assets\Scripts\SmoothFollow.cs" />
      <Compile Include="Assets\Unused Scripts\ActorController.cs" />
