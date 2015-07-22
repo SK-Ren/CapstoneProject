@@ -32,11 +32,22 @@ public class CollisionManager : MonoBehaviour
 		if ( 1 <<col.gameObject.transform.parent.gameObject.layer == LayerMask.GetMask ("Enemy")) {
 			Debug.Log ("Collison: Enemy"); 
 			SendMessageUpwards("Knockback");
+			SendMessageUpwards("takeDamage");
+			Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(),col); 
+			//WaitForSeconds(1f);
+
 		} else 
 			Debug.Log ("Is Enemy: " + ( 1 <<col.gameObject.transform.parent.gameObject.layer == LayerMask.GetMask ("Enemy")));
 
-		//if (col.gameObject.layer == LayerMask.GetMask ("Weapon"))
-			//Debug.Log ("Collision: Weapon"); // Knockback()
+		if ( 1 <<col.gameObject.transform.parent.gameObject.layer == LayerMask.GetMask ("Enemy")) {
+			Debug.Log ("Collison: Enemy"); 
+			SendMessageUpwards("Knockback");
+			SendMessageUpwards("takeDamage");
+			Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(),col); 
+			//WaitForSeconds(1f);
+			
+		} else 
+			Debug.Log ("Is Enemy: " + ( 1 <<col.gameObject.transform.parent.gameObject.layer == LayerMask.GetMask ("Enemy")));
 
 	}
 }
